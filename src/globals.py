@@ -1,6 +1,15 @@
-from typing_extensions import Any, NotRequired, TypedDict
+from typing_extensions import Literal, TypedDict
 
 
-class Item(TypedDict):
+class Identification(TypedDict):
+    itemType: Literal["identification"]
     prompt: str
-    choices: NotRequired[list[Any]]
+
+
+class MultipleChoice(TypedDict):
+    itemType: Literal["multiple choice"]
+    prompt: str
+    choices: list[str]
+
+
+Item = Identification | MultipleChoice

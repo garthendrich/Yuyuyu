@@ -1,8 +1,9 @@
-import socket
+from socket import AF_INET, SOCK_STREAM, socket
 import threading
 
+
 # Function to handle a client connection
-def handle_client(client_socket, player_count):
+def handle_client(client_socket: socket, player_count: int):
     name = client_socket.recv(1024).decode()
     print(f"Player {player_count}: {name} has joined.")
 
@@ -12,18 +13,20 @@ def handle_client(client_socket, player_count):
     else:
         print("Waiting for the second player to join.")
 
+
 # Function to send game information to clients
-def send_game_info(client_socket, player_names, game_name):
-    for i, player_name in enumerate(player_names):
+def send_game_info(client_socket: socket, player_names: list[str], game_name: str):
+    for player_name in player_names:
         info = f"Welcome, {player_name}! You are playing {game_name}."
         client_socket.send(info.encode())
 
         # Ensure that the client has enough time to receive the message
         client_socket.recv(1024)
 
+
 # Main server function
 def server():
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server = socket(AF_INET, SOCK_STREAM)
     server.bind(("0.0.0.0", 5556))  # Use a different port (e.g., 5556)
     server.listen(2)  # Listen for 2 clients
 
@@ -37,8 +40,11 @@ def server():
 
         player_count += 1
 
-        client_handler = threading.Thread(target=handle_client, args=(client, player_count))
+        client_handler = threading.Thread(
+            target=handle_client, args=(client, player_count)
+        )
         client_handler.start()
-        
+
+
 # if __name__ == "__server__":
 #     server()

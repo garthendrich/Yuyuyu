@@ -1,5 +1,5 @@
 from socket import AF_INET, SOCK_STREAM, socket
-import threading
+from threading import Thread
 
 
 # Function to handle a client connection
@@ -40,11 +40,5 @@ def server():
 
         player_count += 1
 
-        client_handler = threading.Thread(
-            target=handle_client, args=(client, player_count)
-        )
+        client_handler = Thread(target=handle_client, args=(client, player_count))
         client_handler.start()
-
-
-# if __name__ == "__server__":
-#     server()

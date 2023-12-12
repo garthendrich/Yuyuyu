@@ -3,8 +3,6 @@ from typing_extensions import Any
 
 from src.globals import Item
 from src.quiz_proper import start_quiz
-from src.server import server
-from src.client import client
 
 
 def main(screen: Any):

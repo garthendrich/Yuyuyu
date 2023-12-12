@@ -1,9 +1,11 @@
 import socket
 
+
 # Function to get player name from the user
 def get_player_name():
     name = input("Enter your name: ")
     return name
+
 
 # Main client function
 def client():
@@ -21,6 +23,3 @@ def client():
     client.send("Received".encode())
 
     client.close()
-
-# if __name__ == "__client__":
-#     client()

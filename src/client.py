@@ -22,5 +22,5 @@ def client():
 
     client.close()
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__client__":
+#     client()

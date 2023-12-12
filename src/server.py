@@ -22,7 +22,7 @@ def send_game_info(client_socket, player_names, game_name):
         client_socket.recv(1024)
 
 # Main server function
-defgame_server():
+def server():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(("0.0.0.0", 5556))  # Use a different port (e.g., 5556)
     server.listen(2)  # Listen for 2 clients
@@ -40,5 +40,5 @@ defgame_server():
         client_handler = threading.Thread(target=handle_client, args=(client, player_count))
         client_handler.start()
         
-if __name__ == "__main__":
-    main()
+# if __name__ == "__server__":
+#     server()

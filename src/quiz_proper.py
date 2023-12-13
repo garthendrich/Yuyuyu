@@ -1,19 +1,20 @@
-from typing_extensions import Any, Callable, cast as typecast
+from curses import window
+from typing_extensions import Callable, cast as typecast
 
 from src.choices import displayChoices
 from src.globals import Identification, Item, MultipleChoice
 
 
-def answerIdentification(item: Item, screen: Any):
+def answerIdentification(item: Item, screen: window):
     item = typecast(Identification, item)
 
     screen.addstr(item["prompt"] + "\n\n👉 ")
-    answer: str = screen.getstr().decode()
+    answer = screen.getstr().decode()
 
     return answer
 
 
-def answerMultipleChoice(item: Item, screen: Any):
+def answerMultipleChoice(item: Item, screen: window):
     item = typecast(MultipleChoice, item)
 
     answerIndex = displayChoices(item["prompt"], item["choices"], screen)
@@ -21,13 +22,13 @@ def answerMultipleChoice(item: Item, screen: Any):
     return answerIndex
 
 
-answerItemFunctions: dict[str, Callable[[Item, Any], str | int]] = {
+answerItemFunctions: dict[str, Callable[[Item, window], str | int]] = {
     "identification": answerIdentification,
     "multiple choice": answerMultipleChoice,
 }
 
 
-def start_quiz(items: list[Item], screen: Any) -> list[str | int]:
+def start_quiz(items: list[Item], screen: window) -> list[str | int]:
     screen.erase()
 
     answers: list[str | int] = []

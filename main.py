@@ -1,12 +1,12 @@
 import curses
-from typing_extensions import Any
+from curses import window
 
 from src.choices import displayChoices
 from src.client import proceedAsClient
 from src.server import proceedAsServer
 
 
-def main(screen: Any):
+def main(screen: window):
     curses.echo()
 
     choiceIndex = displayChoices("Yuyuyu", ["Host the test", "Take the test"], screen)

@@ -1,6 +1,6 @@
-from curses import KEY_DOWN, KEY_ENTER, KEY_UP
 from typing_extensions import Any, Callable, cast as typecast
 
+from src.choices import displayChoices
 from src.globals import Identification, Item, MultipleChoice
 
 
@@ -16,26 +16,9 @@ def answerIdentification(item: Item, screen: Any):
 def answerMultipleChoice(item: Item, screen: Any):
     item = typecast(MultipleChoice, item)
 
-    answerIndex = 0
+    answerIndex = displayChoices(item["prompt"], item["choices"], screen)
 
-    while True:
-        screen.addstr(item["prompt"] + "\n\n")
-
-        choices: list[str] = item["choices"]
-        for index, choice in enumerate(choices):
-            prefix = "👉 " if index == answerIndex else "   "
-            screen.addstr(prefix + choice + "\n")
-
-        key: int = screen.getch()
-        if key == KEY_UP:
-            answerIndex = (answerIndex - 1 + len(choices)) % len(choices)
-        elif key == KEY_DOWN:
-            answerIndex = (answerIndex + 1) % len(choices)
-        elif key == KEY_ENTER or key == 10 or key == 13:
-            return answerIndex
-            break
-
-        screen.erase()
+    return answerIndex
 
 
 answerItemFunctions: dict[str, Callable[[Item, Any], str | int]] = {

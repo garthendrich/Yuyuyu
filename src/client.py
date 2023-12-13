@@ -8,7 +8,7 @@ def get_player_name():
 
 
 # Main client function
-def client():
+def proceedAsClient():
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect(("127.0.0.1", 5556))
 

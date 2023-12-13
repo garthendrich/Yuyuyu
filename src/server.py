@@ -25,7 +25,7 @@ def send_game_info(client_socket: socket, player_names: list[str], game_name: st
 
 
 # Main server function
-def server():
+def proceedAsServer():
     server = socket(AF_INET, SOCK_STREAM)
     server.bind(("0.0.0.0", 5556))  # Use a different port (e.g., 5556)
     server.listen(2)  # Listen for 2 clients

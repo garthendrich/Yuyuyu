@@ -1,5 +1,8 @@
 from curses import window
+import json
 from socket import AF_INET, SOCK_STREAM, socket
+
+from data.quiz_items import quizItems
 
 
 TAKER_COUNT = 2
@@ -28,7 +31,7 @@ def proceedAsServer(screen: window):
                 screen.addstr("Users have joined. Quiz starts now!\n\n")
 
                 for clientSocket in clientSockets:
-                    clientSocket.send(" ".encode())
+                    clientSocket.send(json.dumps(quizItems).encode())
 
             else:
                 screen.addstr("Waiting for other users to join the lobby\n\n")

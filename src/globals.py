@@ -12,4 +12,4 @@ class MultipleChoice(TypedDict):
     choices: list[str]
 
 
-Item = Identification | MultipleChoice
+QuizItem = Identification | MultipleChoice

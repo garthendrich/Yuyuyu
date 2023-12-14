@@ -1,7 +1,8 @@
 from curses import window
+import json
 from socket import AF_INET, SOCK_STREAM, socket
 
-from data.quiz_items import quizItems
+from src.globals import QuizItem
 from src.quiz_proper import startQuiz
 
 
@@ -17,6 +18,5 @@ def proceedAsClient(screen: window):
         screen.refresh()
 
         # wait for test to start
-        clientSocket.recv(1024)
-
+        quizItems: list[QuizItem] = json.loads(clientSocket.recv(1024).decode())
         startQuiz(quizItems, screen)

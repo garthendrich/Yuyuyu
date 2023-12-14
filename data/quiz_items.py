@@ -1,7 +1,7 @@
-from src.globals import Item
+from src.globals import QuizItem
 
 
-quizItems: list[Item] = [
+quizItems: list[QuizItem] = [
     {"itemType": "identification", "prompt": "What is this question?"},
     {
         "itemType": "multiple choice",

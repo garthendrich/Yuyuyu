@@ -11,10 +11,12 @@ def main(screen: window):
 
     choiceIndex = displayChoices("Yuyuyu", ["Host the test", "Take the test"], screen)
 
+    screen.clear()
+
     if choiceIndex == 0:
-        proceedAsServer()
+        proceedAsServer(screen)
     else:
-        proceedAsClient()
+        proceedAsClient(screen)
 
     # test quiz proper ---
 

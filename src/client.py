@@ -1,23 +1,20 @@
-import socket
-
-
-# Function to get player name from the user
-def get_player_name():
-    name = input("Enter your name: ")
-    return name
+from curses import window
+from socket import AF_INET, SOCK_STREAM, socket
 
 
 # Main client function
-def proceedAsClient():
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect(("127.0.0.1", 5556))
+def proceedAsClient(screen: window):
+    screen.addstr("Name: ")
+    playerName = screen.getstr().decode()
 
-    player_name = get_player_name()
-    client.send(player_name.encode())
+    client = socket(AF_INET, SOCK_STREAM)
+    client.connect(("127.0.0.1", 5556))
+    client.send(playerName.encode())
 
     # Wait for the game information from the server
     game_info = client.recv(1024).decode()
-    print(game_info)
+    screen.addstr(game_info)
+    screen.refresh()
 
     # Send a confirmation to the server to acknowledge receiving the message
     client.send("Received".encode())

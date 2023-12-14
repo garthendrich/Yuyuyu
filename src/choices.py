@@ -18,6 +18,5 @@ def displayChoices(prompt: str, choices: list[str], screen: window) -> int:
             choiceIndex = (choiceIndex + 1) % len(choices)
         elif key == KEY_ENTER or key == 10 or key == 13:
             return choiceIndex
-            break
 
-        screen.erase()
+        screen.clear()

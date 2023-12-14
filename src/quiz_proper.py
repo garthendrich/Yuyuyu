@@ -28,8 +28,9 @@ answerItemFunctions: dict[str, Callable[[Item, window], str | int]] = {
 }
 
 
-def start_quiz(items: list[Item], screen: window) -> list[str | int]:
+def startQuiz(items: list[Item], screen: window) -> list[str | int]:
     screen.erase()
+    screen.refresh()
 
     answers: list[str | int] = []
 

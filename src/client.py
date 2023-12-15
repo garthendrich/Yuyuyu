@@ -19,4 +19,5 @@ def proceedAsClient(screen: window):
 
         # wait for test to start
         quizItems: list[QuizItem] = json.loads(clientSocket.recv(1024).decode())
-        startQuiz(quizItems, screen)
+        answers = startQuiz(quizItems, screen)
+        clientSocket.send(json.dumps(answers).encode())

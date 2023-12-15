@@ -2,9 +2,10 @@ from curses import window
 import json
 from socket import AF_INET, SOCK_STREAM, socket
 from threading import Thread
-from typing_extensions import TypedDict
+from typing_extensions import cast as typecast, TypedDict
 
-from data.quiz_items import quizItems
+from data.quiz_items import items, quizItemsWithoutAnswers
+from src.globals import Identification, MultipleChoice
 
 
 TAKER_COUNT = 2
@@ -29,18 +30,39 @@ def proceedAsServer(screen: window):
         screen.refresh()
 
         for client in clients:
-            client["socket"].send(json.dumps(quizItems).encode())
+            client["socket"].send(json.dumps(quizItemsWithoutAnswers).encode())
             client["thread"].start()
 
         for client in clients:
             client["thread"].join()
 
         screen.erase()
-
+        screen.addstr("Scores\n\n")
         for client in clients:
-            screen.addstr(json.dumps(client["answers"]) + "\n")
-            screen.refresh()
+            score = 0
 
+            for itemIndex in range(len(items)):
+                item = items[itemIndex]
+                clientAnswer = client["answers"][itemIndex]
+
+                itemType = item["itemType"]
+                if itemType == "identification":
+                    item = typecast(Identification, item)
+
+                    if clientAnswer in item["possibleAnswers"]:
+                        score += 1
+
+                elif itemType == "multiple choice":
+                    item = typecast(MultipleChoice, item)
+
+                    if clientAnswer == item["answerIndex"]:
+                        score += 1
+
+            screen.addstr(f"{client['userName']}: {score}\n")
+            client["socket"].send(str(score).encode())
+
+        screen.addstr("\nPress any key to exit\n")
+        screen.refresh()
         screen.getch()
 
 

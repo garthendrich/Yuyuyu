@@ -4,12 +4,14 @@ from typing_extensions import Literal, TypedDict
 class Identification(TypedDict):
     itemType: Literal["identification"]
     prompt: str
+    possibleAnswers: list[str]
 
 
 class MultipleChoice(TypedDict):
     itemType: Literal["multiple choice"]
     prompt: str
     choices: list[str]
+    answerIndex: int
 
 
 QuizItem = Identification | MultipleChoice

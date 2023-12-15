@@ -14,10 +14,19 @@ def proceedAsClient(screen: window):
         clientSocket.connect(("127.0.0.1", 5556))
         clientSocket.send(playerName.encode())
 
-        screen.addstr("\nWaiting for other users to join the lobby\n\n")
+        screen.addstr("\nWaiting for other users to join the lobby\n")
         screen.refresh()
 
         # wait for test to start
         quizItems: list[QuizItem] = json.loads(clientSocket.recv(1024).decode())
         answers = startQuiz(quizItems, screen)
         clientSocket.send(json.dumps(answers).encode())
+
+        screen.addstr("Waiting for other users to finish taking the quiz\n")
+        screen.refresh()
+
+        score = int(clientSocket.recv(1023).decode())
+        screen.erase()
+        screen.addstr(f"You got a score of {score} out of {len(quizItems)}\n\n")
+        screen.addstr("Press any key to exit")
+        screen.getch()

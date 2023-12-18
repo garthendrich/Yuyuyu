@@ -48,8 +48,9 @@ items: list[QuizItem] = [
     {
         "category": "medium",
         "itemType": "identification",
-        "prompt": "True or False: An array allows you to store a group of items of different data type together in memory.",
-        "possibleAnswers": ["False", "false"],
+        "prompt": "An array allows you to store a group of items of different data type together in memory.",
+        "choices": ["True", "False"],
+        "answerIndex": 1,
     },
 
     {

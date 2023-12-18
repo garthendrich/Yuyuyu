@@ -41,32 +41,38 @@ def proceedAsServer(screen: window):
         for client in clients:
             client["thread"].join()
 
+         # Create/open a file to write the score summary
+        with open('Overall_Scores.txt', 'w') as file:
+            file.write("Score Summary\n\n")
 
+            screen.erase()
+            screen.addstr(f"Score Summary\n\n")
+            for client in clients:
+                score = 0
 
-        screen.erase()
-        screen.addstr(f"Score Summary\n\n")
-        for client in clients:
-            score = 0
+                for itemIndex in range(len(items)):
+                    item = items[itemIndex]
+                    clientAnswer = client["answers"][itemIndex]
 
-            for itemIndex in range(len(items)):
-                item = items[itemIndex]
-                clientAnswer = client["answers"][itemIndex]
+                    itemType = item["itemType"]
+                    if itemType == "identification":
+                        item = typecast(Identification, item)
 
-                itemType = item["itemType"]
-                if itemType == "identification":
-                    item = typecast(Identification, item)
+                        if clientAnswer in item["possibleAnswers"]:
+                            score += getScoreByCategory(item["category"])
 
-                    if clientAnswer in item["possibleAnswers"]:
-                        score += getScoreByCategory(item["category"])
+                    elif itemType == "multiple choice":
+                        item = typecast(MultipleChoice, item)
 
-                elif itemType == "multiple choice":
-                    item = typecast(MultipleChoice, item)
+                        if clientAnswer == item["answerIndex"]:
+                            score += getScoreByCategory(item["category"])
 
-                    if clientAnswer == item["answerIndex"]:
-                        score += getScoreByCategory(item["category"])
+                screen.addstr(f"{client['userName']}: {score}\n")
 
-            screen.addstr(f"{client['userName']}: {score}\n")
-            client["socket"].send(str(score).encode())
+                # Write the score to the file
+                file.write(f"{client['userName']}: {score}\n")
+                
+                client["socket"].send(str(score).encode())
 
         screen.addstr("\nPress any key to exit")
         screen.refresh()

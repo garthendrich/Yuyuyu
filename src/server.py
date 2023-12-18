@@ -18,7 +18,7 @@ class Client(TypedDict):
 def getScoreByCategory(category):
     if category == "easy":
         return 2
-    elif category == "medium":
+    elif category == "average":
         return 3
     elif category == "difficult":
         return 5
@@ -49,10 +49,12 @@ def proceedAsServer(screen: window):
             screen.addstr(f"Score Summary\n\n")
             for client in clients:
                 score = 0
-
+                correct_answers = []
+                categories = []
                 for itemIndex in range(len(items)):
                     item = items[itemIndex]
                     clientAnswer = client["answers"][itemIndex]
+                    categories.append(item["category"])
 
                     itemType = item["itemType"]
                     if itemType == "identification":
@@ -60,19 +62,31 @@ def proceedAsServer(screen: window):
 
                         if clientAnswer in item["possibleAnswers"]:
                             score += getScoreByCategory(item["category"])
+                            correct_answers.append(True)
+                        else:
+                            correct_answers.append(False)
 
                     elif itemType == "multiple choice":
                         item = typecast(MultipleChoice, item)
 
                         if clientAnswer == item["answerIndex"]:
                             score += getScoreByCategory(item["category"])
+                            correct_answers.append(True)
+                        else:
+                            correct_answers.append(False)
 
                 screen.addstr(f"{client['userName']}: {score}\n")
 
                 # Write the score to the file
                 file.write(f"{client['userName']}: {score}\n")
                 
-                client["socket"].send(str(score).encode())
+                data = {
+                    "score": score,
+                    "correctness": correct_answers,
+                    "question_categories": categories
+                }
+
+                client["socket"].send(json.dumps(data).encode())
 
         screen.addstr("\nPress any key to exit")
         screen.refresh()

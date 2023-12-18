@@ -37,9 +37,9 @@ def startQuiz(items: list[QuizItem], screen: window) -> list[str | int]:
     for item in items:
         if item["category"] == "easy":
             screen.addstr("Easy (2 pts)\n\n")
-        elif item["category"] == "easy":
-            screen.addstr("Medium (3 pts)\n\n")
-        elif item["category"] == "easy":
+        elif item["category"] == "average":
+            screen.addstr("Average (3 pts)\n\n")
+        elif item["category"] == "difficult":
             screen.addstr("Difficult (5 pts)\n\n")
 
         currentItemType = item["itemType"]

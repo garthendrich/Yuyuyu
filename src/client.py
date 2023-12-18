@@ -30,8 +30,20 @@ def proceedAsClient(screen: window):
         screen.addstr("Waiting for other users to finish taking the quiz\n")
         screen.refresh()
 
-        score = int(clientSocket.recv(1023).decode())
+        # receive score and correctness information from the server
+        received_data = clientSocket.recv(8192).decode()
+        data = json.loads(received_data)
+        score = data["score"]
+        correctness = data["correctness"]
+        question_categories = data["question_categories"]
+
         screen.erase()
         screen.addstr(f"You got a score of {score} out of {len(quizItems)}\n\n")
+
+        # Display correctness information for each question
+        screen.addstr("Summary of Answers:\n")
+        for index, is_correct in enumerate(correctness, start=1):
+            screen.addstr(f"Question {index} ({question_categories[index-1].capitalize()}): {'Correct' if is_correct else 'Incorrect'}\n")
+
         screen.addstr("Press any key to exit")
         screen.getch()

@@ -8,8 +8,11 @@ def displayChoices(prompt: str, choices: list[str], screen: window) -> int:
         screen.addstr(prompt + "\n\n")
 
         for index, choice in enumerate(choices):
-            prefix = "👉 " if index == choiceIndex else "   "
-            screen.addstr(prefix + choice + "\n")
+            prefix = "👉👉 " if index == choiceIndex else "     "
+            screen.addstr(prefix + choice)
+            if index == choiceIndex:
+                screen.addstr(" 👈👈")
+            screen.addstr("\n")
 
         key: int = screen.getch()
         if key == KEY_UP:

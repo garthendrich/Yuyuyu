@@ -8,7 +8,7 @@ from src.globals import Identification, QuizItem, MultipleChoice
 def answerIdentification(item: QuizItem, screen: window):
     item = typecast(Identification, item)
 
-    screen.addstr(item["prompt"] + "\n\n👉 ")
+    screen.addstr(item["prompt"] + "\n\n👉👉 ")
     answer = screen.getstr().decode()
 
     return answer

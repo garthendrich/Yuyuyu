@@ -80,8 +80,13 @@ def findConnections(serverSocket: socket, screen: window):
     serverSocket.settimeout(0.1)
     screen.nodelay(True)
     keyPress = None
-    while keyPress not in [KEY_ENTER, 10, 13]:
+    while True:
         keyPress = screen.getch()
+
+        if keyPress in [KEY_ENTER, 10, 13]:
+            if len(clients) > 0:
+                break
+            screen.addstr("There are no users yet\n\n")
 
         clientSocket = None
         try:

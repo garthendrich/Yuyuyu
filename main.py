@@ -10,9 +10,7 @@ def main(screen: window):
     curses.echo()
 
     choiceIndex = displayChoices("Yuyuyu", ["Host the test", "Take the test"], screen)
-
     screen.clear()
-
     if choiceIndex == 0:
         proceedAsServer(screen)
     else:

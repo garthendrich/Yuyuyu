@@ -3,9 +3,9 @@ import json
 import socket as socketModule
 from socket import AF_INET, SOCK_STREAM, socket
 from threading import Thread
-from typing_extensions import cast as typecast, TypedDict
+from typing_extensions import Literal, cast as typecast, TypedDict
 
-from data.quiz_items import items, quizItemsWithoutAnswers
+from data.quiz_items import quizItems, quizItemsWithoutAnswers
 from src.globals import Identification, MultipleChoice
 from src.utils import getScoreByCategory
 
@@ -36,7 +36,7 @@ def proceedAsServer(screen: window):
             client["thread"].join()
 
         maximumScore = 0
-        for quizItem in quizItem:
+        for quizItem in quizItems:
             maximumScore += getScoreByCategory(quizItem["category"])
 
         with open("Overall_Scores.txt", "w") as file:
@@ -46,10 +46,10 @@ def proceedAsServer(screen: window):
             screen.addstr(f"Score Summary out of {maximumScore}\n\n")
             for client in clients:
                 score = 0
-                correct_answers = []
-                categories = []
-                for itemIndex in range(len(items)):
-                    item = items[itemIndex]
+                correct_answers: list[bool] = []
+                categories: list[Literal["easy", "average", "difficult"]] = []
+                for itemIndex in range(len(quizItems)):
+                    item = quizItems[itemIndex]
                     clientAnswer = client["answers"][itemIndex]
                     categories.append(item["category"])
 
@@ -76,11 +76,11 @@ def proceedAsServer(screen: window):
 
                 # Write the score to the file
                 file.write(f"{client['userName']}: {score}\n")
-                
+
                 data = {
                     "score": score,
                     "correctness": correct_answers,
-                    "question_categories": categories
+                    "question_categories": categories,
                 }
 
                 client["socket"].send(json.dumps(data).encode())

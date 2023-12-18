@@ -26,10 +26,10 @@ def displayChoices(prompt: str, choices: list[str], screen: window):
         screen.clear()
 
 
-def getScoreByCategory(category: Literal["easy", "medium", "difficult"]):
+def getScoreByCategory(category: Literal["easy", "average", "difficult"]):
     if category == "easy":
         return 2
-    elif category == "medium":
+    elif category == "average":
         return 3
     elif category == "difficult":
         return 5

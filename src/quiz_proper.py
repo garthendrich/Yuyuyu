@@ -17,7 +17,7 @@ def answerIdentification(item: QuizItem, screen: window):
 def answerMultipleChoice(item: QuizItem, screen: window):
     item = typecast(MultipleChoice, item)
 
-    categoryDisplay = None
+    categoryDisplay = ""
     if item["category"] == "easy":
         categoryDisplay = "Easy (2 pts)\n\n"
     elif item["category"] == "average":
@@ -25,7 +25,9 @@ def answerMultipleChoice(item: QuizItem, screen: window):
     elif item["category"] == "difficult":
         categoryDisplay = "Difficult (5 pts)\n\n"
 
-    answerIndex = displayChoices(categoryDisplay + item["prompt"], item["choices"], screen)
+    answerIndex = displayChoices(
+        categoryDisplay + item["prompt"], item["choices"], screen
+    )
 
     return answerIndex
 

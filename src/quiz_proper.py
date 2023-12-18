@@ -1,7 +1,7 @@
 from curses import window
 from typing_extensions import Callable, cast as typecast
 
-from src.choices import displayChoices
+from src.utils import displayChoices
 from src.globals import Identification, QuizItem, MultipleChoice
 
 

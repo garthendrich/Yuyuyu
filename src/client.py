@@ -4,6 +4,7 @@ from socket import AF_INET, SOCK_STREAM, socket
 
 from src.globals import QuizItem
 from src.quiz_proper import startQuiz
+from src.utils import getScoreByCategory
 
 
 def proceedAsClient(screen: window):
@@ -43,8 +44,12 @@ def proceedAsClient(screen: window):
         correctness = data["correctness"]
         question_categories = data["question_categories"]
 
+        maximumScore = 0
+        for quizItem in quizItems:
+            maximumScore += getScoreByCategory(quizItem["category"])
+
         screen.erase()
-        screen.addstr(f"You got a score of {score} out of {len(quizItems)}\n\n")
+        screen.addstr(f"You got a score of {score} out of {maximumScore}\n\n")
 
         # Display correctness information for each question
         screen.addstr("Summary of Answers:\n")

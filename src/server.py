@@ -7,6 +7,7 @@ from typing_extensions import cast as typecast, TypedDict
 
 from data.quiz_items import items, quizItemsWithoutAnswers
 from src.globals import Identification, MultipleChoice
+from src.utils import getScoreByCategory
 
 
 class Client(TypedDict):
@@ -15,13 +16,6 @@ class Client(TypedDict):
     thread: Thread
     answers: list[str | int]
 
-def getScoreByCategory(category):
-    if category == "easy":
-        return 2
-    elif category == "average":
-        return 3
-    elif category == "difficult":
-        return 5
 
 def proceedAsServer(screen: window):
     with socket(AF_INET, SOCK_STREAM) as serverSocket:
@@ -41,12 +35,15 @@ def proceedAsServer(screen: window):
         for client in clients:
             client["thread"].join()
 
-         # Create/open a file to write the score summary
-        with open('Overall_Scores.txt', 'w') as file:
-            file.write("Score Summary\n\n")
+        maximumScore = 0
+        for quizItem in quizItem:
+            maximumScore += getScoreByCategory(quizItem["category"])
+
+        with open("Overall_Scores.txt", "w") as file:
+            file.write(f"Score Summary out of {maximumScore}\n\n")
 
             screen.erase()
-            screen.addstr(f"Score Summary\n\n")
+            screen.addstr(f"Score Summary out of {maximumScore}\n\n")
             for client in clients:
                 score = 0
                 correct_answers = []

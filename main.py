@@ -1,7 +1,7 @@
 import curses
 from curses import window
 
-from src.choices import displayChoices
+from src.utils import displayChoices
 from src.client import proceedAsClient
 from src.server import proceedAsServer
 

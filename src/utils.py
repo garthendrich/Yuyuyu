@@ -1,7 +1,8 @@
 from curses import KEY_DOWN, KEY_ENTER, KEY_UP, window
+from typing_extensions import Literal
 
 
-def displayChoices(prompt: str, choices: list[str], screen: window) -> int:
+def displayChoices(prompt: str, choices: list[str], screen: window):
     choiceIndex = 0
 
     while True:
@@ -23,3 +24,12 @@ def displayChoices(prompt: str, choices: list[str], screen: window) -> int:
             return choiceIndex
 
         screen.clear()
+
+
+def getScoreByCategory(category: Literal["easy", "medium", "difficult"]):
+    if category == "easy":
+        return 2
+    elif category == "medium":
+        return 3
+    elif category == "difficult":
+        return 5

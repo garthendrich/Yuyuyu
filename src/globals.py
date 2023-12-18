@@ -2,14 +2,14 @@ from typing_extensions import Literal, TypedDict
 
 
 class Identification(TypedDict):
-    category: str
+    category: Literal["easy", "medium", "difficult"]
     itemType: Literal["identification"]
     prompt: str
     possibleAnswers: list[str]
 
 
 class MultipleChoice(TypedDict):
-    category: str
+    category: Literal["easy", "medium", "difficult"]
     itemType: Literal["multiple choice"]
     prompt: str
     choices: list[str]

@@ -2,7 +2,6 @@ from src.globals import QuizItem
 
 
 items: list[QuizItem] = [
-    # easy category
     {
         "category": "easy",
         "itemType": "identification",
@@ -45,7 +44,7 @@ items: list[QuizItem] = [
         "prompt": "This refers to the duration it takes for an algorithm to execute a specific sequence of instructions.",
         "possibleAnswers": ["Time Complexity", "time complexity", "Time complexity"],
     },
-    # medium category
+
     {
         "category": "medium",
         "itemType": "identification",
@@ -67,12 +66,12 @@ items: list[QuizItem] = [
         "prompt": "What error is manifested by the following code: \n\nimport math\nprint(math.exp(9999))",
         "possibleAnswers": ["Overflow Error", "Overflow error", "overflow error", "Overflow", "overflow"],
     },
-    # difficult category
+
     {
         "category": "difficult",
         "itemType": "multiple choice",
         "prompt": "Rewrite P(x)=3x^3 +2x^2 -6x +7 using Horner's Method. Equate the manipulated expression to P(x).",
-        "choices": ["P(x)=7+x(-6+x(2+3x)) ", "P(x)=((3x+2)-6)x+7", "P(x)=7+(-6+x(2+3x))", "P(x)=P(x)=(3x+2)x-6x+7"],
+        "choices": ["P(x)=7+x(-6+x(2+3x))", "P(x)=((3x+2)-6)x+7", "P(x)=7+(-6+x(2+3x))", "P(x)=P(x)=(3x+2)x-6x+7"],
         "answerIndex": 0,
     },
 

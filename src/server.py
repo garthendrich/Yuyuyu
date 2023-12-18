@@ -15,6 +15,13 @@ class Client(TypedDict):
     thread: Thread
     answers: list[str | int]
 
+def getScoreByCategory(category):
+    if category == "easy":
+        return 2
+    elif category == "medium":
+        return 3
+    elif category == "difficult":
+        return 5
 
 def proceedAsServer(screen: window):
     with socket(AF_INET, SOCK_STREAM) as serverSocket:
@@ -34,8 +41,10 @@ def proceedAsServer(screen: window):
         for client in clients:
             client["thread"].join()
 
+
+
         screen.erase()
-        screen.addstr("Scores\n\n")
+        screen.addstr(f"Score Summary\n\n")
         for client in clients:
             score = 0
 
@@ -48,13 +57,13 @@ def proceedAsServer(screen: window):
                     item = typecast(Identification, item)
 
                     if clientAnswer in item["possibleAnswers"]:
-                        score += 1
+                        score += getScoreByCategory(item["category"])
 
                 elif itemType == "multiple choice":
                     item = typecast(MultipleChoice, item)
 
                     if clientAnswer == item["answerIndex"]:
-                        score += 1
+                        score += getScoreByCategory(item["category"])
 
             screen.addstr(f"{client['userName']}: {score}\n")
             client["socket"].send(str(score).encode())

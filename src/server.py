@@ -1,4 +1,4 @@
-from curses import window
+from curses import KEY_ENTER, window
 import json
 import socket as socketModule
 from socket import AF_INET, SOCK_STREAM, socket
@@ -7,9 +7,6 @@ from typing_extensions import cast as typecast, TypedDict
 
 from data.quiz_items import items, quizItemsWithoutAnswers
 from src.globals import Identification, MultipleChoice
-
-
-TAKER_COUNT = 2
 
 
 class Client(TypedDict):
@@ -22,7 +19,7 @@ class Client(TypedDict):
 def proceedAsServer(screen: window):
     with socket(AF_INET, SOCK_STREAM) as serverSocket:
         serverSocket.bind(("", 0))
-        serverSocket.listen(TAKER_COUNT)
+        serverSocket.listen()
 
         clients = findConnections(serverSocket, screen)
 
@@ -62,7 +59,7 @@ def proceedAsServer(screen: window):
             screen.addstr(f"{client['userName']}: {score}\n")
             client["socket"].send(str(score).encode())
 
-        screen.addstr("\nPress any key to exit\n")
+        screen.addstr("\nPress any key to exit")
         screen.refresh()
         screen.getch()
 
@@ -72,29 +69,44 @@ def findConnections(serverSocket: socket, screen: window):
     ip = socketModule.gethostbyname(hostname)
     portNumber = serverSocket.getsockname()[1]
 
-    screen.addstr("Waiting for users to join...\n\n")
+    screen.addstr("Waiting for users to join...\n")
+    screen.addstr("Press enter to start quiz.\n\n")
     screen.addstr(f"IP Address: {ip}\n")
     screen.addstr(f"Port number: {portNumber}\n\n")
     screen.refresh()
 
     clients: list[Client] = []
 
-    while len(clients) < TAKER_COUNT:
-        clientSocket, _ = serverSocket.accept()
+    serverSocket.settimeout(0.1)
+    screen.nodelay(True)
+    keyPress = None
+    while keyPress not in [KEY_ENTER, 10, 13]:
+        keyPress = screen.getch()
+
+        clientSocket = None
+        try:
+            clientSocket, _ = serverSocket.accept()
+        except socketModule.timeout:
+            if clientSocket is None:
+                continue
+
         userName = clientSocket.recv(1024).decode()
         answersReceiver: list[str | int] = []
-        thread = Thread(target=receiveAnswers, args=(clientSocket, answersReceiver))
+        clientThread = Thread(
+            target=receiveAnswers, args=(clientSocket, answersReceiver)
+        )
         clients.append(
             {
                 "userName": userName,
                 "socket": clientSocket,
-                "thread": thread,
+                "thread": clientThread,
                 "answers": answersReceiver,
             }
         )
 
         screen.addstr(f"User {userName} has joined the lobby.\n")
         screen.refresh()
+    screen.nodelay(False)
 
     return clients
 

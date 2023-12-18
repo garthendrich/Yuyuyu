@@ -12,8 +12,14 @@ def proceedAsClient(screen: window):
 
     screen.addstr("👉👉 Server IP address: ")
     serverIp = screen.getstr().decode()
-    screen.addstr("👉👉 Server port number: ")
-    serverPortNumber = int(screen.getstr().decode())
+
+    while True:
+        try:
+            screen.addstr("👉👉 Server port number: ")
+            serverPortNumber = int(screen.getstr().decode())
+            break
+        except ValueError:
+            screen.addstr("Invalid port number! Input a number\n")
 
     with socket(AF_INET, SOCK_STREAM) as clientSocket:
         clientSocket.connect((serverIp, serverPortNumber))
@@ -43,7 +49,9 @@ def proceedAsClient(screen: window):
         # Display correctness information for each question
         screen.addstr("Summary of Answers:\n")
         for index, is_correct in enumerate(correctness, start=1):
-            screen.addstr(f"Question {index} ({question_categories[index-1].capitalize()}): {'Correct' if is_correct else 'Incorrect'}\n")
+            screen.addstr(
+                f"Question {index} ({question_categories[index-1].capitalize()}): {'Correct' if is_correct else 'Incorrect'}\n"
+            )
 
         screen.addstr("Press any key to exit")
         screen.getch()

@@ -9,7 +9,7 @@ python -m venv venv
 2. Activate virtual environment
 
 ```sh
-. venv/bin/activate
+. venv/Scripts/activate
 ```
 
 3. Install dependencies

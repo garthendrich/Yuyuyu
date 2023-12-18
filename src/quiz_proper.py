@@ -5,10 +5,22 @@ from src.utils import displayChoices
 from src.globals import Identification, QuizItem, MultipleChoice
 
 
+def getCategoryDisplay(category: str):
+    categoryDisplay = ""
+    if category == "easy":
+        categoryDisplay = "Easy (2 pts)\n\n"
+    elif category == "average":
+        categoryDisplay = "Average (3 pts)\n\n"
+    elif category == "difficult":
+        categoryDisplay = "Difficult (5 pts)\n\n"
+
+    return categoryDisplay
+
+
 def answerIdentification(item: QuizItem, screen: window):
     item = typecast(Identification, item)
 
-    screen.addstr(item["prompt"] + "\n\n👉👉 ")
+    screen.addstr(getCategoryDisplay(item["category"]) + item["prompt"] + "\n\n👉👉 ")
     answer = screen.getstr().decode()
 
     return answer
@@ -17,16 +29,8 @@ def answerIdentification(item: QuizItem, screen: window):
 def answerMultipleChoice(item: QuizItem, screen: window):
     item = typecast(MultipleChoice, item)
 
-    categoryDisplay = ""
-    if item["category"] == "easy":
-        categoryDisplay = "Easy (2 pts)\n\n"
-    elif item["category"] == "average":
-        categoryDisplay = "Average (3 pts)\n\n"
-    elif item["category"] == "difficult":
-        categoryDisplay = "Difficult (5 pts)\n\n"
-
     answerIndex = displayChoices(
-        categoryDisplay + item["prompt"], item["choices"], screen
+        getCategoryDisplay(item["category"]) + item["prompt"], item["choices"], screen
     )
 
     return answerIndex

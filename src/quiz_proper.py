@@ -17,7 +17,15 @@ def answerIdentification(item: QuizItem, screen: window):
 def answerMultipleChoice(item: QuizItem, screen: window):
     item = typecast(MultipleChoice, item)
 
-    answerIndex = displayChoices(item["prompt"], item["choices"], screen)
+    categoryDisplay = None
+    if item["category"] == "easy":
+        categoryDisplay = "Easy (2 pts)\n\n"
+    elif item["category"] == "average":
+        categoryDisplay = "Average (3 pts)\n\n"
+    elif item["category"] == "difficult":
+        categoryDisplay = "Difficult (5 pts)\n\n"
+
+    answerIndex = displayChoices(categoryDisplay + item["prompt"], item["choices"], screen)
 
     return answerIndex
 
@@ -35,13 +43,6 @@ def startQuiz(items: list[QuizItem], screen: window) -> list[str | int]:
     answers: list[str | int] = []
 
     for item in items:
-        if item["category"] == "easy":
-            screen.addstr("Easy (2 pts)\n\n")
-        elif item["category"] == "average":
-            screen.addstr("Average (3 pts)\n\n")
-        elif item["category"] == "difficult":
-            screen.addstr("Difficult (5 pts)\n\n")
-
         currentItemType = item["itemType"]
 
         for itemType in answerItemFunctions:

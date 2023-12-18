@@ -7,12 +7,12 @@ from src.quiz_proper import startQuiz
 
 
 def proceedAsClient(screen: window):
-    screen.addstr("Name: ")
+    screen.addstr("👉👉 Name: ")
     playerName = screen.getstr().decode()
 
-    screen.addstr("Server IP address: ")
+    screen.addstr("👉👉 Server IP address: ")
     serverIp = screen.getstr().decode()
-    screen.addstr("Server port number: ")
+    screen.addstr("👉👉 Server port number: ")
     serverPortNumber = int(screen.getstr().decode())
 
     with socket(AF_INET, SOCK_STREAM) as clientSocket:

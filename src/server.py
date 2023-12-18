@@ -75,7 +75,7 @@ def proceedAsServer(screen: window):
                         else:
                             correct_answers.append(False)
 
-                screen.addstr(f"{client['userName']}: {score}\n")
+                screen.addstr(f"👉👉 {client['userName']}: {score}\n")
 
                 # Write the score to the file
                 file.write(f"{client['userName']}: {score}\n")

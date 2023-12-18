@@ -1,5 +1,6 @@
 from curses import window
 import json
+import socket as socketModule
 from socket import AF_INET, SOCK_STREAM, socket
 from threading import Thread
 from typing_extensions import cast as typecast, TypedDict
@@ -20,7 +21,7 @@ class Client(TypedDict):
 
 def proceedAsServer(screen: window):
     with socket(AF_INET, SOCK_STREAM) as serverSocket:
-        serverSocket.bind(("0.0.0.0", 5556))  # Use a different port (e.g., 5556)
+        serverSocket.bind(("", 0))
         serverSocket.listen(TAKER_COUNT)
 
         clients = findConnections(serverSocket, screen)
@@ -67,7 +68,13 @@ def proceedAsServer(screen: window):
 
 
 def findConnections(serverSocket: socket, screen: window):
-    screen.addstr("Waiting for users to join on port 5556\n\n")
+    hostname = socketModule.gethostname()
+    ip = socketModule.gethostbyname(hostname)
+    portNumber = serverSocket.getsockname()[1]
+
+    screen.addstr("Waiting for users to join...\n\n")
+    screen.addstr(f"IP Address: {ip}\n")
+    screen.addstr(f"Port number: {portNumber}\n\n")
     screen.refresh()
 
     clients: list[Client] = []
@@ -86,7 +93,7 @@ def findConnections(serverSocket: socket, screen: window):
             }
         )
 
-        screen.addstr(f"User {userName} has joined the lobby.\n\n")
+        screen.addstr(f"User {userName} has joined the lobby.\n")
         screen.refresh()
 
     return clients
